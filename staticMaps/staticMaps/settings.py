@@ -1,6 +1,8 @@
 # coding=UTF-8
 
 import os
+import json
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 def env_var(key, default=None):
@@ -20,11 +22,15 @@ BASE_LAYERS = {}
 
 for filename in os.listdir(BASE_LAYER_DIR):
     base, ext = os.path.splitext(filename)
-    BASE_LAYERS[base] = filename
+    if ext == ".xml":
+        BASE_LAYERS[base] = filename
 
-BASE_LAYERS_ATTRIBUTION = {
-    "osm" : u"Map data © OpenStreetMap Contributors",
-}
+BASE_LAYERS_ATTRIBUTION = {}
+try:
+    with open(os.path.join(BASE_LAYER_DIR, "attribution.json"), "r") as f:
+        BASE_LAYERS_ATTRIBUTION = json.load(f)
+except Exception, e:
+    print "Error loading baselayers %s" % e
 
 ATTRIBUTION_FONT = os.path.join(BASE_DIR, "fonts/Raleway-Regular.ttf")
 ATTRIBUTION_FONT_SIZE = 10
