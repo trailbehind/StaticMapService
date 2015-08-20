@@ -20,7 +20,7 @@ BASE_LAYERS = {}
 
 for filename in os.listdir(BASE_LAYER_DIR):
     base, ext = os.path.splitext(filename)
-    BASE_LAYERS[base] = base
+    BASE_LAYERS[base] = filename
 
 BASE_LAYERS_ATTRIBUTION = {
     "osm" : u"Map data © OpenStreetMap Contributors",
