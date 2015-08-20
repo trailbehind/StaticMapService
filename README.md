@@ -5,7 +5,7 @@ Designed to be used as a micro service and deployed as a docker container.
 
 Prebuilt docker images available as gaiagps/staticmapservice, If you want to add your own background, extend that image. 
 
-For an example service file for deploying with fleet see staticmaps@.service
+For an example service file for deploying with fleet see [staticmaps@.service](staticmaps@.service)
 
 ## API
 
