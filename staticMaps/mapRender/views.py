@@ -1,6 +1,6 @@
 # coding=UTF-8
 import cStringIO
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.gis.geos import LineString, MultiLineString, Point, Polygon
 from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
 from django.conf import settings
@@ -36,14 +36,16 @@ def render_static(request, height=None, width=None, format='png',
 # width and height
     width = int(width)
     height = int(height)
-    if width > 1024 or height > 1024 or width <= 1 or height <= 1:
+    if width > settings.MAX_IMAGE_DIMENSION or \
+        height > settings.MAX_IMAGE_DIMENSION or \
+        width <= 1 or height <= 1:
         logging.debug("Invalid size")
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest("Invalid image size, both dimensions must be in range %i-%i" % (1, settings.MAX_IMAGE_DIMENSION))
 
 # image format
     if format not in IMAGE_FORMATS:
         logging.error("unknown image format %s" % format)
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest("Unknown image format, available formats: " + ", ".join(IMAGE_FORMATS))
 
     if format.startswith('png'):
         mimetype = 'image/png'
@@ -55,15 +57,15 @@ def render_static(request, height=None, width=None, format='png',
     if bounds:
         bounds_components = bounds.split(',')
         if len(bounds_components) != 4:
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest("Invalid bounds, must be 4 , separated numbers")
         bounds_components = [float(f) for f in bounds_components]
 
         if not (-180 < bounds_components[0] < 180) or not (-180 < bounds_components[2] < 180):
             logging.error("x out of range %f or %f" % (bounds_components[0], bounds_components[2]))
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest("x out of range %f or %f" % (bounds_components[0], bounds_components[2]))
         if not (-90 < bounds_components[1] < 90) or not (-90 < bounds_components[3] < 90):
             logging.error("y out of range %f or %f" % (bounds_components[1], bounds_components[3]))
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest("y out of range %f or %f" % (bounds_components[1], bounds_components[3]))
 
         ll = Point(bounds_components[0], bounds_components[1], srid=4326)
         ll.transform(render_srid)
@@ -82,7 +84,7 @@ def render_static(request, height=None, width=None, format='png',
 
 # baselayer
     if background not in settings.BASE_LAYERS:
-        return HttpResponseBadRequest()
+        return HttpResponseNotFound("Background not found")
     background_file = settings.BASE_LAYERS[background]
 
 # GeoJSON post data
@@ -92,7 +94,7 @@ def render_static(request, height=None, width=None, format='png',
         input_data = None
 
     if not bounds and not center and not input_data:
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest("Bounds, center, or post data is required.")
 
 # initialize map
     m = mapnik.Map(width, height)
@@ -129,10 +131,10 @@ def render_static(request, height=None, width=None, format='png',
     for feature in features:
         if 'geometry' not in feature:
             logging.debug("feature does not have geometry")
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest("Feature does not have a geometry")
         if 'type' not in feature['geometry']:
             logging.debug("geometry does not have type")
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest("Geometry does not have a type")
 
         fid += 1
         style_name = str(fid)

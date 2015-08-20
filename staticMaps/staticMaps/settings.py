@@ -28,6 +28,7 @@ BASE_LAYERS_ATTRIBUTION = {
 
 ATTRIBUTION_FONT = os.path.join(BASE_DIR, "fonts/Raleway-Regular.ttf")
 ATTRIBUTION_FONT_SIZE = 10
+MAX_IMAGE_DIMENSION = env_var('MAX_IMAGE_DIMENSION', 1024)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'lr&)s39c&v@^0&%57zlwe_h3e_un*e*^xurh95rjzz=q6zkn^b'
