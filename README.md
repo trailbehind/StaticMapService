@@ -82,3 +82,9 @@ curl -X POST -H "Content-Type: application/json" -d \
 ```
 
 ![Example image](http://static.gaiagps.com/staticMapsExample1.png)
+
+
+
+## Credits
+
+Inspired by the [Mapbox Static map API](https://www.mapbox.com/developers/api/static/)
