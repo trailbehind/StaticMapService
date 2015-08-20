@@ -7,6 +7,7 @@ Prebuilt docker images available as gaiagps/staticmapservice, If you want to add
 
 For an example service file for deploying with fleet see [staticmaps@.service](staticmaps@.service)
 
+For an example of how to add your own backgrounds see [trailbehind/StaticMapService-extension-example](https://github.com/trailbehind/StaticMapService-extension-example/)
 ## API
 
 ### POST /{width}x{height}/{background}.{format}
