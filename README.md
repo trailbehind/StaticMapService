@@ -1,7 +1,16 @@
 # StaticMaps
-Static Map rendering service using mapnik. Post GeoJSON, get back a map rendered on a background.
-Written in python, using django.
-Designed to be used as a micro service and deployed as a docker container.
+
+This service lets you render static maps, using Mapnik to style them.
+
+It accepts GeoJSON POST requests, and returns a styled map, rendered on a background.
+
+## Technology
+
+This is designed to be used as a micro service and deployed as a Docker container.
+
+It used Python, Django, and Mapnik.
+
+## Prebuilt Docker Images
 
 Prebuilt docker images available as gaiagps/staticmapservice, If you want to add your own background, extend that image. 
 
