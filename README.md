@@ -1,2 +1,2 @@
-# StaticMapService
-A micro service for rendering static map images
+# StaticMaps
+Static Map renderer using mapnik
