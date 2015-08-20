@@ -52,7 +52,7 @@ See [Mapnik LineSymbolizer reference](https://github.com/mapnik/mapnik/wiki/Line
 
 ### GET or POST /{bounds}/{width}x{height}/{background}.{format}
 #### Parameters
-* bounds: A bounding box in e,s,w,n format. Example `-120,38,-119,39`. Bounding boxes that cross the anti-meridian are not currently supported
+* bounds: A bounding box in w,s,e,n format. Example `-120,38,-119,39`. Bounding boxes that cross the anti-meridian are not currently supported
 
 #### Post data - Optional
 * Same as above, but optional, and map will not be fit to data.
