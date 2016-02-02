@@ -83,9 +83,8 @@ def render_static(request, height=None, width=None, format='png',
         # todo calc bounds from center and zoom
 
 # baselayer
-    if background not in settings.BASE_LAYERS:
+    if background not in settings.BASE_LAYERS and background != 'none':
         return HttpResponseNotFound("Background not found")
-    background_file = settings.BASE_LAYERS[background]
 
 # GeoJSON post data
     if request.method == "POST" and len(request.body):
@@ -102,6 +101,7 @@ def render_static(request, height=None, width=None, format='png',
 
 # add a tile source as a background
     if background != "none":
+        background_file = settings.BASE_LAYERS[background]
         background_style = mapnik.Style()
         background_rule = mapnik.Rule()
         background_rule.symbols.append(mapnik.RasterSymbolizer())
