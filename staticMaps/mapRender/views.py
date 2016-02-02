@@ -14,17 +14,31 @@ import re
 import urllib
 
 IMAGE_FORMATS = ['png', 'png32', 'png64', 'png128', 'png256', 'jpeg', 'jpeg70', 'jpeg80', 'jpeg90']
-LINEJOIN_OPTIONS = {
-    'miter': mapnik.line_join.miter,
-    'bevel': mapnik.line_join.bevel,
-    'round': mapnik.line_join.round
-}
+try:
+    LINEJOIN_OPTIONS = {
+        'miter': mapnik.line_join.miter,
+        'bevel': mapnik.line_join.bevel,
+        'round': mapnik.line_join.round
+    }
+except:
+    LINEJOIN_OPTIONS = {
+        'miter': mapnik.stroke_linejoin.MITER_JOIN,
+        'bevel': mapnik.stroke_linejoin.BEVEL_JOIN,
+        'round': mapnik.stroke_linejoin.ROUND_JOIN
+    }
 
-LINECAP_OPTIONS = {
-    'round': mapnik.line_cap.round,
-    'butt': mapnik.line_cap.butt,
-    'square': mapnik.line_cap.square
-}
+try:
+    LINECAP_OPTIONS = {
+        'round': mapnik.line_cap.round,
+        'butt': mapnik.line_cap.butt,
+        'square': mapnik.line_cap.square
+    }
+except:
+    LINECAP_OPTIONS = {
+        'round': mapnik.stroke_linecap.ROUND_CAP,
+        'butt': mapnik.stroke_linecap.BUTT_CAP,
+        'square': mapnik.stroke_linecap.SQUARE_CAP
+    }
 
 class InvalidStyleException(Exception):
     """ """
