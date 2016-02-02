@@ -146,12 +146,17 @@ def render_static(request, height=None, width=None, format='png',
                 geos_feature = LineString(feature['geometry']['coordinates'])
             elif feature['geometry']['type'] == 'MultiLineString':
                 rings = feature['geometry']['coordinates']
+                rings = [[(c[0], c[1]) for c in r] for r in rings]
                 if len(rings) == 1:
                     geos_feature = LineString(rings[0])
                 else:
                     linestrings = []
                     for ring in rings:
-                        linestrings.append(LineString(ring))
+                        try:
+                            linestrings.append(LineString(ring))
+                        except Exception, e:
+                            logging.error("Error adding ring: %s", e)
+
                     geos_feature = MultiLineString(linestrings)
 
             geos_feature.srid = 4326
