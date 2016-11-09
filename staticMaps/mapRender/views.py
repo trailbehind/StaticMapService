@@ -180,7 +180,7 @@ def render_static(request, height=None, width=None, format='png',
             line_layer.styles.append(style_name)
             line_layer.srs = '+init=epsg:' + str(render_srid)
             m.layers.append(line_layer)
-        elif feature['geometry']['type'] == 'Polygon':
+        elif feature['geometry']['type'] == 'Polygon' or feature['geometry']['type'] == 'MultiPolygon':
             geos_feature = GEOSGeometry(json.dumps(feature['geometry']))
             geos_feature.srid = 4326
             geos_feature.transform(render_srid)
